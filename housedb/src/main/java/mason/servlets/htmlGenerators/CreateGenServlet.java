@@ -87,10 +87,10 @@ public class CreateGenServlet extends HttpServlet
         out.println("<p>Servlet Activated</p>");
         out.println("<p>Entered a fatal program, press return if you want to live</p>");
 
-        out.println("<form action='CreateHomeServlet' method='GET'");
+        out.println("<form action='CreateServlet' method='GET'");
         out.println("<h4>Create Home<h4><br>");
         out.println("<input type='text' name='name'>House Name<br>");
-        out.println("<input type='hidden' name='type' value=homes'/>");
+        out.println("<input type='hidden' name='type' value='homes'>");
         out.println("<input type='submit' name='submit' value='submit'>");
         out.println("</form>");
     }
@@ -106,11 +106,11 @@ public class CreateGenServlet extends HttpServlet
         out.println("<p>Servlet Activated</p>");
         out.println("<p>Entered a fatal program, press return if you want to live</p>");
 
-        out.println("<form action='CreateRoomServlet' method='GET'");
+        out.println("<form action='CreateServlet' method='GET'");
         out.println("<h4>Create Room<h4><br>");
         out.println("<input type='text' name='name'>Room Name<br>");
         out.println("<input type='hidden' name='primary' value='" + primaryKey + "'/>");
-        out.println("<input type='hidden' name='type' value=rooms'/>");
+        out.println("<input type='hidden' name='type' value='rooms'>");
         out.println("<input type='submit' name='submit' value='submit'>");
         out.println("</form>");
 

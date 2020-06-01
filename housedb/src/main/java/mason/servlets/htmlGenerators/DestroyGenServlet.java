@@ -71,7 +71,7 @@ public class DestroyGenServlet extends HttpServlet
                         mhl.add(mh); 
                         
                     }
-                    System.out.println("Finnished grabbing rows from homes");
+                    System.out.println("Finished grabbing rows from homes");
                     System.out.println("mhl count: " + mhl.size());
         
                 }

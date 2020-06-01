@@ -23,6 +23,7 @@ public class CreateRoomServlet extends HttpServlet
      private static final long serialVersionUID = 1L;
     boolean debug = true;
     String name;
+    String primary;
     Statement stmt;
 
     MyDatabase db;
@@ -41,8 +42,8 @@ public class CreateRoomServlet extends HttpServlet
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String primary = req.getParameter("primary");
+        name = req.getParameter("name");
+        primary = req.getParameter("primary");
 
         fillStatement();
 

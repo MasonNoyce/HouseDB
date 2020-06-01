@@ -203,7 +203,7 @@ public class ListServlet extends HttpServlet
             "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?name="+
             primaryKey+"&type=rooms'>Destroy Room</a>");
 
-        }
+        }       
         else
         {
             out.println("<p> No Rooms Found</p>");

@@ -71,17 +71,14 @@ public class MyServer {
 
     private void setServlets()
     {
-//        server.addServlet("/MyHomeDatabase", "ListHomesServlet", new ListHomesServlet()).addMapping("/ListHomesServlet");
-//        server.addServlet("/MyHomeDatabase", "ListRoomsServlet", new ListRoomsServlet()).addMapping("/ListRoomsServlet");
 
         server.addServlet("/MyHomeDatabase", "ListServlet", new ListServlet()).addMapping("/ListServlet");
 
 
         server.addServlet("/MyHomeDatabase", "CreateHomeServlet", new CreateHomeServlet()).addMapping("/CreateHomeServlet");
         server.addServlet("/MyHomeDatabase", "CreateRoomServlet", new CreateRoomServlet()).addMapping("/CreateRoomServlet");
+        server.addServlet("/MyHomeDatabase", "CreateServlet", new CreateServlet()).addMapping("/CreateServlet");
 
-
-//        server.addServlet("/MyHomeDatabase", "CreateRoomGenServlet", new CreateRoomGenServlet()).addMapping("/CreateRoomGenServlet");
 
         server.addServlet("/MyHomeDatabase", "CreateGenServlet", new CreateGenServlet()).addMapping("/CreateGenServlet");
 
