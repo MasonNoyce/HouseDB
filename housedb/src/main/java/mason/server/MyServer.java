@@ -82,12 +82,11 @@ public class MyServer {
 
         server.addServlet("/MyHomeDatabase", "CreateRoomGenServlet", new CreateRoomGenServlet()).addMapping("/CreateRoomGenServlet");
 
-        server.addServlet("/MyHomeDatabase", "DestroyHomeServlet", new DestroyHomeServlet()).addMapping("/DestroyHomeServlet");
-        server.addServlet("/MyHomeDatabase", "DestroyRoomServlet", new DestroyRoomServlet()).addMapping("/DestroyRoomServlet");
 
+        server.addServlet("/MyHomeDatabase", "DestroyServlet", new DestroyServlet()).addMapping("/DestroyServlet");
 
-        server.addServlet("/MyHomeDatabase", "DestroyHomeGenServlet", new DestroyHomeGenServlet()).addMapping("/DestroyHomeGenServlet");
-        server.addServlet("/MyHomeDatabase", "DestroyRoomGenServlet", new DestroyRoomGenServlet()).addMapping("/DestroyRoomGenServlet");
+        server.addServlet("/MyHomeDatabase", "DestroyGenServlet", new DestroyGenServlet()).addMapping("/DestroyGenServlet");
+
 
     }
 

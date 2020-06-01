@@ -89,7 +89,7 @@ public class ListHomesServlet extends HttpServlet {
             resp.getWriter().println("<a href=ListRoomsServlet?name="+mh.name + ">" + mh.name + "</a><br>");
         }
 
-        out.println("<br><br><a href='pages/createhome.html'>Create Home</a><br><a href='DestroyHomeGenServlet'>Destroy Home</a>");
+        out.println("<br><br><a href='pages/createhome.html'>Create Home</a><br><a href='DestroyGenServlet?type=homes'>Destroy Home</a>");
 
         out.close();
 

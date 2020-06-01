@@ -120,8 +120,8 @@ public class ListRoomsServlet extends HttpServlet {
             }
 
             out.println("<br><br><a href='CreateRoomGenServlet?name="+primaryKey+
-            "'>Create Room</a><br><a href='DestroyRoomGenServlet?name="+
-            primaryKey+"'>Destroy Room</a>");
+            "'>Create Room</a><br><a href='DestroyGenServlet?name="+
+            primaryKey+"&type=rooms'>Destroy Room</a>");
 
         }
         else
@@ -130,8 +130,8 @@ public class ListRoomsServlet extends HttpServlet {
             out.println("<p>Requested Key: " + primaryKey+"</p>");
 
             out.println("<br><br><a href='CreateRoomGenServlet?name="+primaryKey+
-            "'>Create Room</a><br><a href='DestroyRoomGenServlet?name="+
-            primaryKey+"'>Destroy Room</a>");
+            "'>Create Room</a><br><a href='DestroyGenServlet?name="+
+            primaryKey+"&type=rooms'>Destroy Room</a>");
 
             
 
