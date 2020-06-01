@@ -21,14 +21,14 @@ public class DBOps
     {
         if(debug == true)System.out.println("DBOps Called");
         //Fill home params gen list
-        homeParams = new ArrayList<>();
-        homeParams.add("id serial PRIMARY KEY");
-        homeParams.add("name VARCHAR(50) UNIQUE");
+            homeParams = new ArrayList<>();
+            homeParams.add("id serial PRIMARY KEY");
+            homeParams.add("name VARCHAR(50) UNIQUE");
 
-        roomParams = new ArrayList<>();
-        roomParams.add("id serial PRIMARY KEY");
-        roomParams.add("name VARCHAR(50) UNIQUE NOT NULL");
-        roomParams.add("home VARCHAR(50) REFERENCES home(name)");
+            roomParams = new ArrayList<>();
+            roomParams.add("id serial PRIMARY KEY");
+            roomParams.add("name VARCHAR(50) UNIQUE NOT NULL");
+            roomParams.add("home VARCHAR(50) REFERENCES homes(name)");
         }
 
     public static DBOps getInstance()
@@ -136,6 +136,21 @@ public class DBOps
     public void deleteFromTableByName(String table, String toDelete, Statement stmt)
     {
         String sql = "DELETE FROM " + table + " WHERE "+table+".name = '" + toDelete +"'";
+        System.out.println(sql);
+
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("Failed to Execute Query");
+        }     
+
+    }
+
+    public void deleteFromTableByName(String table,String home, String toDelete, Statement stmt)
+    {
+        String sql = "DELETE FROM " + table + " WHERE "+table+".name = '" + toDelete +"' AND "+ table+".home = '" + home + "'";
         System.out.println(sql);
 
         try {

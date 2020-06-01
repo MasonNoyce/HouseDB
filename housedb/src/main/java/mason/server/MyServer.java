@@ -72,12 +72,22 @@ public class MyServer {
     private void setServlets()
     {
         server.addServlet("/MyHomeDatabase", "TestServlet", new TestServlet()).addMapping("/TestServlet");
+
         server.addServlet("/MyHomeDatabase", "ListHomesServlet", new ListHomesServlet()).addMapping("/ListHomesServlet");
         server.addServlet("/MyHomeDatabase", "ListRoomsServlet", new ListRoomsServlet()).addMapping("/ListRoomsServlet");
 
         server.addServlet("/MyHomeDatabase", "CreateHomeServlet", new CreateHomeServlet()).addMapping("/CreateHomeServlet");
+        server.addServlet("/MyHomeDatabase", "CreateRoomServlet", new CreateRoomServlet()).addMapping("/CreateRoomServlet");
+
+
+        server.addServlet("/MyHomeDatabase", "CreateRoomGenServlet", new CreateRoomGenServlet()).addMapping("/CreateRoomGenServlet");
+
         server.addServlet("/MyHomeDatabase", "DestroyHomeServlet", new DestroyHomeServlet()).addMapping("/DestroyHomeServlet");
+        server.addServlet("/MyHomeDatabase", "DestroyRoomServlet", new DestroyRoomServlet()).addMapping("/DestroyRoomServlet");
+
+
         server.addServlet("/MyHomeDatabase", "DestroyHomeGenServlet", new DestroyHomeGenServlet()).addMapping("/DestroyHomeGenServlet");
+        server.addServlet("/MyHomeDatabase", "DestroyRoomGenServlet", new DestroyRoomGenServlet()).addMapping("/DestroyRoomGenServlet");
 
     }
 

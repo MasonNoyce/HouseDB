@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mason.db.MyDatabase;
-import mason.db.interfaces.MyHome;
+import mason.db.interfaces.MyRoom;
 
-public class CreateRoomGenServlet extends HttpServlet
+public class DestroyRoomGenServlet extends HttpServlet
 {
 
-    private ArrayList<MyHome> mhl;
+    private ArrayList<MyRoom> mrl;
 
     @Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,24 +28,22 @@ public class CreateRoomGenServlet extends HttpServlet
         //make connection
         MyDatabase db = new MyDatabase();
         Statement stmt = null;
-        mhl = new ArrayList<>();
-
-
-        //Get paramaters
-        String primaryKey = req.getParameter("name");
-        System.out.println("*************  "+primaryKey + "************");
+        mrl = new ArrayList<>();
+        String primary = req.getParameter("name");
 
 
         try
         {
             stmt = db.getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM homes;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM rooms;");
             while(rs.next())
             {
-                MyHome mh = new MyHome();
-                mh.id = rs.getInt("id");
-                mh.name = rs.getString("name");
-                mhl.add(mh);    
+                MyRoom mr = new MyRoom();
+                mr.id = rs.getInt("id");
+                mr.name = rs.getString("name");
+                mr.primary = rs.getString("home");
+                primary = mr.primary;
+                mrl.add(mr);    
             }
             System.out.println("Finnished grabbing rows from homes");
 
@@ -61,16 +59,24 @@ public class CreateRoomGenServlet extends HttpServlet
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         out.println("<a href=\"index.html\">Back</a>");
-        out.println("<p>Requested PRimary Key: "+primaryKey+"</p>");
         
         out.println("<p>Servlet Activated</p>");
         out.println("<p>Entered a fatal program, press return if you want to live</p>");
+        for(MyRoom mr : mrl)
+        {
+            out.println("<p>" + mr.name + "  :  " + mr.id + " : "+ mr.primary + "</p>");
+        }
 
-        out.println("<form action='CreateRoomServlet' method='GET'");
-        out.println("<h4>Create Room<h4><br>");
-        out.println("<input type='text' name='name'>House Name<br>");
-        out.println("<input type='hidden' name='primary' value='" + primaryKey + "'/>");
-        out.println("<input type='submit' name='submit' value='submit'>");
+        out.println("<form action='DestroyRoomServlet' method='GET'");
+        out.println("<label for='rooms'> Choose Home To Destroy</label>");
+        out.println("<select id='rooms' name='name'>");
+        for(MyRoom mr : mrl)
+        {
+            out.println("<option value='" + mr.name + "'>" + mr.name + "</option>");
+        }
+        out.println("</select>");
+        out.println("<input type='hidden' name='primary' value='" + primary + "'/>");
+        out.println("<input type='submit'>");
         out.println("</form>");
 
         out.close();
