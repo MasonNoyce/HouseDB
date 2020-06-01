@@ -35,7 +35,7 @@ public class DestroyGenServlet extends HttpServlet
                 try
                 {
                     stmt = db.getConnection().createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM rooms;");
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM rooms WHERE home='"+primaryKey+"'");
                     while(rs.next())
                     {
                         MyRoom mr = new MyRoom();

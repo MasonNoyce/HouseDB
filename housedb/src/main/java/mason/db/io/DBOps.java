@@ -27,7 +27,7 @@ public class DBOps
 
             roomParams = new ArrayList<>();
             roomParams.add("id serial PRIMARY KEY");
-            roomParams.add("name VARCHAR(50) UNIQUE NOT NULL");
+            roomParams.add("name VARCHAR(50) NOT NULL");
             roomParams.add("home VARCHAR(50) REFERENCES homes(name)");
         }
 

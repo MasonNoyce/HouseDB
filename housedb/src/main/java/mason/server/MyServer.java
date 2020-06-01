@@ -81,7 +81,9 @@ public class MyServer {
         server.addServlet("/MyHomeDatabase", "CreateRoomServlet", new CreateRoomServlet()).addMapping("/CreateRoomServlet");
 
 
-        server.addServlet("/MyHomeDatabase", "CreateRoomGenServlet", new CreateRoomGenServlet()).addMapping("/CreateRoomGenServlet");
+//        server.addServlet("/MyHomeDatabase", "CreateRoomGenServlet", new CreateRoomGenServlet()).addMapping("/CreateRoomGenServlet");
+
+        server.addServlet("/MyHomeDatabase", "CreateGenServlet", new CreateGenServlet()).addMapping("/CreateGenServlet");
 
 
         server.addServlet("/MyHomeDatabase", "DestroyServlet", new DestroyServlet()).addMapping("/DestroyServlet");

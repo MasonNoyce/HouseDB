@@ -91,7 +91,7 @@ public class ListServlet extends HttpServlet
                 {        
                     stmt = db.getConnection().createStatement();
         
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM rooms");
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM rooms WHERE home = '"+primaryKey+"'");
         
                     if(rs.next())
                     {
@@ -172,7 +172,7 @@ public class ListServlet extends HttpServlet
             resp.getWriter().println("<a href=ListServlet?name="+mh.name + "&type=rooms>" + mh.name + "</a><br>");
         }
 
-        out.println("<br><br><a href='pages/createhome.html'>Create Home</a><br><a href='DestroyGenServlet?type=homes'>Destroy Home</a>");
+        out.println("<br><br><a href='CreateGenServlet?type=homes'>Create Home</a><br><a href='DestroyGenServlet?type=homes'>Destroy Home</a>");
 
         out.close();        
     }
@@ -199,8 +199,8 @@ public class ListServlet extends HttpServlet
                 resp.getWriter().println("<a href=ListRoomsServlet?name="+mr.name + "&type=rooms>" + mr.name + "</a><br>");
             }
 
-            out.println("<br><br><a href='CreateRoomGenServlet?name="+primaryKey+
-            "'>Create Room</a><br><a href='DestroyGenServlet?name="+
+            out.println("<br><br><a href='CreateGenServlet?name="+primaryKey+
+            "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?name="+
             primaryKey+"&type=rooms'>Destroy Room</a>");
 
         }
@@ -209,8 +209,8 @@ public class ListServlet extends HttpServlet
             out.println("<p> No Rooms Found</p>");
             out.println("<p>Requested Key: " + primaryKey+"</p>");
 
-            out.println("<br><br><a href='CreateRoomGenServlet?name="+primaryKey+
-            "'>Create Room</a><br><a href='DestroyGenServlet?name="+
+            out.println("<br><br><a href='CreateGenServlet?name="+primaryKey+
+            "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?name="+
             primaryKey+"&type=rooms'>Destroy Room</a>");
 
             
