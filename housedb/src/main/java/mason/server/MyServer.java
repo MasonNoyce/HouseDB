@@ -7,10 +7,7 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 
 import mason.servlets.*;
-import mason.servlets.createpages.*;
-import mason.servlets.destroypages.*;
-import mason.servlets.htmlGenerators.*;
-import mason.servlets.listpages.*;
+
 
 public class MyServer {
     private static MyServer instance = null;
@@ -75,8 +72,6 @@ public class MyServer {
         server.addServlet("/MyHomeDatabase", "ListServlet", new ListServlet()).addMapping("/ListServlet");
 
 
-        server.addServlet("/MyHomeDatabase", "CreateHomeServlet", new CreateHomeServlet()).addMapping("/CreateHomeServlet");
-        server.addServlet("/MyHomeDatabase", "CreateRoomServlet", new CreateRoomServlet()).addMapping("/CreateRoomServlet");
         server.addServlet("/MyHomeDatabase", "CreateServlet", new CreateServlet()).addMapping("/CreateServlet");
 
 

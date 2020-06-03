@@ -1,4 +1,4 @@
-package mason.servlets.destroypages;
+package mason.servlets;
 
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ public class DestroyServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
 
-    String name;
-    String primary;
+    String room;
+    String home;
     String type;
 
     boolean debug = true;
@@ -44,8 +44,8 @@ public class DestroyServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
     {
-        name = req.getParameter("name");
-        primary = req.getParameter("primary");
+        room = req.getParameter("room");
+        home = req.getParameter("home");
         type = req.getParameter("type");
 
         fillStatement();
@@ -68,10 +68,10 @@ public class DestroyServlet extends HttpServlet
         switch(type)
         {
             case "rooms":
-                dbops.deleteFromTableByName(type, primary,name, stmt);
+                dbops.deleteFromTableByName(type, home,room, stmt);
                 break;
             case "homes":
-                dbops.deleteFromTableByName(type, name, stmt);
+                dbops.deleteFromTableByName(type, home, stmt);
                 break;
             default:
                 break;
@@ -84,7 +84,7 @@ public class DestroyServlet extends HttpServlet
                 
         out.println("<a href=\"index.html\">Back</a>");
         resp.getWriter().println("<p>Servlet Activated</p>");
-        resp.getWriter().println("<p>" + type +" " + name +" was Destroyed</p>");
+        resp.getWriter().println("<p>" + type +" " + room +" was Destroyed</p>");
         out.close();
 
     }

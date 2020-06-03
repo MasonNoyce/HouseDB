@@ -5,6 +5,6 @@ import java.util.ArrayList;
 public class MyHome 
 {
     public int id;
-    public String name;
+    public String home;
     ArrayList<String> rooms = new ArrayList<String>();   
 }

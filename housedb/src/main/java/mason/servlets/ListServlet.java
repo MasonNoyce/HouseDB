@@ -1,4 +1,4 @@
-package mason.servlets.listpages;
+package mason.servlets;
 
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class ListServlet extends HttpServlet
     boolean debug = true;
 
     String type;
-    String primaryKey;
+    String home;
 
     @Override
     public void init() throws ServletException {
@@ -46,26 +46,26 @@ public class ListServlet extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
     {
         type = req.getParameter("type");
-        primaryKey = req.getParameter("name");
+        home = req.getParameter("home");
 
         switch(type)
         {
             case "homes":
                 if(debug)System.out.println("I am in Homes");
                 fillStatement();
-                if(!dbops.checkTable(tables))dbops.createTable("homes",stmt,dbops.getHomeParams());//if not create it
+                if(!dbops.checkTable(tables))dbops.createTable(type,stmt,dbops.getHomeParams());//if not create it
         
                 ArrayList<MyHome> mhl = new ArrayList<>();
                 try
                 {
-                    if(debug)System.out.println("I am trying to grab homes");
+                    if(debug)System.out.println("I am trying to grab " + type);
                     stmt = db.getConnection().createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM homes;");
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM " + type);
                     while(rs.next())
                     {
                         MyHome mh = new MyHome();
                         mh.id = rs.getInt("id");
-                        mh.name = rs.getString("name");
+                        mh.home = rs.getString("name");
                         mhl.add(mh);    
                     }
                     System.out.println("Finnished grabbing rows from homes");
@@ -84,14 +84,14 @@ public class ListServlet extends HttpServlet
             case "rooms":
 
                 fillStatement();
-                if(!dbops.checkTable(tables))dbops.createTable("rooms",stmt,dbops.getRoomParams());//if not create it
+                if(!dbops.checkTable(tables))dbops.createTable(type,stmt,dbops.getRoomParams());//if not create it
                 ArrayList<MyRoom> mrl = new ArrayList<>();
                 boolean tableFound = false;
                 try
                 {        
                     stmt = db.getConnection().createStatement();
         
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM rooms WHERE home = '"+primaryKey+"'");
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM rooms WHERE home = '"+home+"'");
         
                     if(rs.next())
                     {
@@ -102,8 +102,8 @@ public class ListServlet extends HttpServlet
         
                             MyRoom mr = new MyRoom();
                             mr.id = rs.getInt("id");
-                            mr.name = rs.getString("name");
-                            mr.primary = rs.getString("home");
+                            mr.room = rs.getString("name");
+                            mr.home = rs.getString("home");
                             mrl.add(mr);    
                         }while(rs.next());
         
@@ -125,7 +125,7 @@ public class ListServlet extends HttpServlet
                     return;
                 }
 
-                printRooms(resp,mrl,primaryKey,tableFound);
+                printRooms(resp,mrl,tableFound);
     
 
                 break;
@@ -169,7 +169,7 @@ public class ListServlet extends HttpServlet
         //Create links for homes
         for(MyHome mh : mhl)
         {
-            resp.getWriter().println("<a href=ListServlet?name="+mh.name + "&type=rooms>" + mh.name + "</a><br>");
+            resp.getWriter().println("<a href=ListServlet?home="+mh.home + "&type=rooms>" + mh.home + "</a><br>");
         }
 
         out.println("<br><br><a href='CreateGenServlet?type=homes'>Create Home</a><br><a href='DestroyGenServlet?type=homes'>Destroy Home</a>");
@@ -177,7 +177,7 @@ public class ListServlet extends HttpServlet
         out.close();        
     }
 
-    private void printRooms(HttpServletResponse resp, ArrayList<MyRoom> mrl,String primaryKey, boolean tableFound)
+    private void printRooms(HttpServletResponse resp, ArrayList<MyRoom> mrl, boolean tableFound)
             throws IOException
     {
         PrintWriter out = resp.getWriter();
@@ -196,22 +196,23 @@ public class ListServlet extends HttpServlet
             for(MyRoom mr : mrl)
             {
                 System.out.println("Creating Room Link");
-                resp.getWriter().println("<a href=ListRoomsServlet?name="+mr.name + "&type=rooms>" + mr.name + "</a><br>");
+                resp.getWriter().println("<a href=ListRoomsServlet?room="+mr.room + "&home=" +mr.home+ "&type=rooms>" + mr.room + 
+                "</a><br>");
             }
 
-            out.println("<br><br><a href='CreateGenServlet?name="+primaryKey+
-            "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?name="+
-            primaryKey+"&type=rooms'>Destroy Room</a>");
+            out.println("<br><br><a href='CreateGenServlet?home="+home+
+            "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?home="+
+            home+"&type=rooms'>Destroy Room</a>");
 
         }       
         else
         {
             out.println("<p> No Rooms Found</p>");
-            out.println("<p>Requested Key: " + primaryKey+"</p>");
+            out.println("<p>Requested Key: " + home+"</p>");
 
-            out.println("<br><br><a href='CreateGenServlet?name="+primaryKey+
-            "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?name="+
-            primaryKey+"&type=rooms'>Destroy Room</a>");
+            out.println("<br><br><a href='CreateGenServlet?home="+home+
+            "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?home="+
+            home+"&type=rooms'>Destroy Room</a>");
 
             
 

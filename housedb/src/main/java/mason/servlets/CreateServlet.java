@@ -1,4 +1,4 @@
-package mason.servlets.createpages;
+package mason.servlets;
 
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ public class CreateServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
     boolean debug = true;
-    String name;
-    String primary;
+    String room;
+    String home;
     String type;
     Statement stmt;
 
@@ -43,8 +43,8 @@ public class CreateServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
     {
-        name = req.getParameter("name");
-        primary = req.getParameter("primary");
+        room = req.getParameter("room");
+        home = req.getParameter("home");
         type = req.getParameter("type");
 
         fillStatement();
@@ -62,7 +62,7 @@ public class CreateServlet extends HttpServlet
                 valuens.add("name");
 
                 //Select values to fill columns
-                values.add("'"+name+"'");
+                values.add("'"+home+"'");
 
                 //Insert into table
                 dbops.insertIntoTable(type, stmt,valuens,values);
@@ -78,8 +78,8 @@ public class CreateServlet extends HttpServlet
                 valuens.add("home");
 
                 //Select values to fill columns
-                values.add("'"+name+"'");
-                values.add("'"+primary+"'");
+                values.add("'"+room+"'");
+                values.add("'"+home+"'");
 
                 //Insert into table
                 dbops.insertIntoTable(type, stmt,valuens,values);
@@ -120,8 +120,8 @@ public class CreateServlet extends HttpServlet
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         out.println("<a href=\"index.html\">Back</a>");
-        out.println("<p> This is the name: " + name + "</p>");
-        out.println("<p> This is the param: " + primary + "</p>");
+        out.println("<p> This is the name: " + room + "</p>");
+        out.println("<p> This is the param: " + home + "</p>");
         out.close();
     }
 
@@ -132,7 +132,7 @@ public class CreateServlet extends HttpServlet
         PrintWriter out = resp.getWriter();
         out.println("<a href=\"index.html\">Back</a>");
         out.println("<p>Servlet Activated</p>");
-        out.println("<p>Home "+name+" was created</p>");
+        out.println("<p>Home "+home+" was created</p>");
         out.close();
 
     }

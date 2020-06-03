@@ -1,4 +1,4 @@
-package mason.servlets.htmlGenerators;
+package mason.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,7 +33,7 @@ public class CreateGenServlet extends HttpServlet
         
         //get params
         String type = req.getParameter("type");
-        String primaryKey = req.getParameter("name");
+        String home = req.getParameter("home");
 
 
 
@@ -44,18 +44,18 @@ public class CreateGenServlet extends HttpServlet
                 break;
 
             case "rooms":
-                System.out.println("*************  "+primaryKey + "************");
+                System.out.println("*************  "+home + "************");
 
 
                 try
                 {
                     stmt = db.getConnection().createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM homes;");
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM " + type);
                     while(rs.next())
                     {
                         MyHome mh = new MyHome();
                         mh.id = rs.getInt("id");
-                        mh.name = rs.getString("name");
+                        mh.home = rs.getString("name");
                         mhl.add(mh);    
                     }
                     System.out.println("Finnished grabbing rows from homes");
@@ -68,7 +68,7 @@ public class CreateGenServlet extends HttpServlet
                     return;
                 }   
                 
-                printRooms(resp,primaryKey);
+                printRooms(resp,home);
                 break;
 
             default:
@@ -89,27 +89,27 @@ public class CreateGenServlet extends HttpServlet
 
         out.println("<form action='CreateServlet' method='GET'");
         out.println("<h4>Create Home<h4><br>");
-        out.println("<input type='text' name='name'>House Name<br>");
+        out.println("<input type='text' name='home'>House Name<br>");
         out.println("<input type='hidden' name='type' value='homes'>");
         out.println("<input type='submit' name='submit' value='submit'>");
         out.println("</form>");
     }
 
-    private void printRooms(HttpServletResponse resp, String primaryKey) throws IOException
+    private void printRooms(HttpServletResponse resp, String home) throws IOException
     {
         //Display List as links in html format
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         out.println("<a href=\"index.html\">Back</a>");
-        out.println("<p>Requested PRimary Key: "+primaryKey+"</p>");
+        out.println("<p>Requested PRimary Key: "+home+"</p>");
         
         out.println("<p>Servlet Activated</p>");
         out.println("<p>Entered a fatal program, press return if you want to live</p>");
 
         out.println("<form action='CreateServlet' method='GET'");
         out.println("<h4>Create Room<h4><br>");
-        out.println("<input type='text' name='name'>Room Name<br>");
-        out.println("<input type='hidden' name='primary' value='" + primaryKey + "'/>");
+        out.println("<input type='text' name='room'>Room Name<br>");
+        out.println("<input type='hidden' name='home' value='" + home + "'/>");
         out.println("<input type='hidden' name='type' value='rooms'>");
         out.println("<input type='submit' name='submit' value='submit'>");
         out.println("</form>");
