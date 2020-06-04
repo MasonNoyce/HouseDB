@@ -1,15 +1,19 @@
 package mason.servlets;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.omg.CORBA.portable.InputStream;
 
 import mason.db.MyDatabase;
 import mason.db.interfaces.MyObject;
@@ -97,6 +101,8 @@ public class ObjectServlet extends HttpServlet
                     + " :" + mol.get(0).description +   "</p><br>");
                 
         
+
+                        
         
                 out.close();  
 
