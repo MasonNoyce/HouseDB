@@ -53,12 +53,14 @@ public class ListServlet extends HttpServlet
         room = req.getParameter("room");
 
         db.fillStatement(type);
+        tableCheck(type);
+
         switch(type)
         {
             case "homes":
                 if(debug)System.out.println("I am in Homes");
 
-                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getHomeParams());//if not create it
+                //get Rid of this in destroy and create
         
                 ArrayList<MyHome> mhl = new ArrayList<>();
                 try
@@ -88,18 +90,15 @@ public class ListServlet extends HttpServlet
 
             case "rooms":
 
-                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getRoomParams());//if not create it
                 ArrayList<MyRoom> mrl = new ArrayList<>();
                 boolean tableFound = false;
                 try
                 {        
-                    db.setStmt(db.getConnection().createStatement());
-        
+                    db.setStmt(db.getConnection().createStatement());        
                     ResultSet rs = db.getStmt().executeQuery("SELECT * FROM rooms WHERE home = '"+home+"'");
         
                     if(rs.next())
-                    {
-        
+                    {        
                         tableFound = true;
                         do
                         {        
@@ -108,7 +107,6 @@ public class ListServlet extends HttpServlet
                             mr.room = rs.getString("room");
                             mr.home = rs.getString("home");
                             mrl.add(mr);    
-
                         }while(rs.next());
         
                         if(debug)System.out.println("Finnished grabbing rows from rooms");
@@ -136,18 +134,15 @@ public class ListServlet extends HttpServlet
 
             case "objects":
 
-                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getObjParams());//if not create it
                 ArrayList<MyObject> mol = new ArrayList<>();
                 boolean otableFound = false;
                 try
                 { 
        
                     db.setStmt(db.getConnection().createStatement());
-                    System.out.println("**********1*************");
 
                     System.out.println(room);
                     ResultSet rs = db.getStmt().executeQuery("SELECT * FROM objects WHERE home = '"+home+"' AND room = '"+room+"'");
-                    System.out.println("***********************");
         
                     if(rs.next())
                     {
@@ -199,25 +194,6 @@ public class ListServlet extends HttpServlet
     }
 
 
-    private void fillStatement()
-    {
-        if(debug)System.out.println("Filling Statements");
-        db = new MyDatabase();
-        try 
-        {
-            dbm = db.getConnection().getMetaData();
-            tables = dbm.getTables(null,null,type,null);
-            stmt = db.getConnection().createStatement();
-            if(debug)System.out.println("Statements Filled");
-        } 
-        catch (SQLException e) 
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.out.println("Failed to connect to metadata");
-        }
-
-    }
 
     private void printHomes(HttpServletResponse resp, ArrayList<MyHome> mhl) throws IOException
     {
@@ -305,7 +281,7 @@ public class ListServlet extends HttpServlet
             {
                 System.out.println("Creating ObjectLink Link");
 
-                resp.getWriter().println("<a href=ListServlet?object="+mo.object+"&room="+mo.room +
+                resp.getWriter().println("<a href=ObjectServlet?object="+mo.object+"&room="+mo.room +
                  "&home=" +mo.home+ "&type=objects>" + mo.object + "</a><br>");
             }
 
@@ -328,6 +304,23 @@ public class ListServlet extends HttpServlet
         }
         out.close();
 
+    }
+
+    public void tableCheck(String type)
+    {
+        switch(type)
+        {
+            case "homes":
+                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getHomeParams());//if not create it
+                break;
+            case "rooms":
+                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getRoomParams());//if not create it
+                break;
+            case "objects":
+                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getObjParams());//if not create it
+                break;
+
+        }
     }
 
 

@@ -82,6 +82,8 @@ public class MyServer {
 
         server.addServlet("/MyHomeDatabase", "DestroyGenServlet", new DestroyGenServlet()).addMapping("/DestroyGenServlet");
 
+        server.addServlet("/MyHomeDatabase", "ObjectServlet", new ObjectServlet()).addMapping("/ObjectServlet");
+
 
     }
 

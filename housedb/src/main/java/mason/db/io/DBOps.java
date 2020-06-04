@@ -193,7 +193,7 @@ public class DBOps
         }     
 
     }
-
+    //For Object
     public void deleteFromTableByName(String table,String home, String room, String toDelete, Statement stmt)
     {
         String sql = "DELETE FROM " + table + " WHERE "+table+".object = '" + toDelete +"' AND "+ table+".home = '" + home + "' AND "+table+".room = '"+room+"'";
