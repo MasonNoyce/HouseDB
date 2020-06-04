@@ -9,11 +9,13 @@ public class DBOps
 {
     
     ArrayList<String> homeParams;//For creating home tables
-    ArrayList<String> roomParams;
+    ArrayList<String> roomParams;//For creating room tables
+    ArrayList<String> objParams;
+    
 
     public String test = "I am a test";
 
-    boolean debug;
+    boolean debug = true;
 
     private static DBOps instance = null;
 
@@ -21,15 +23,11 @@ public class DBOps
     {
         if(debug == true)System.out.println("DBOps Called");
         //Fill home params gen list
-            homeParams = new ArrayList<>();
-            homeParams.add("id serial PRIMARY KEY");
-            homeParams.add("name VARCHAR(50) UNIQUE");
+        fillParams();
 
-            roomParams = new ArrayList<>();
-            roomParams.add("id serial PRIMARY KEY");
-            roomParams.add("name VARCHAR(50) NOT NULL");
-            roomParams.add("home VARCHAR(50) REFERENCES homes(name)");
-        }
+
+
+    }
 
     public static DBOps getInstance()
     {
@@ -41,8 +39,38 @@ public class DBOps
         return instance;
     }
 
+    private void fillParams()
+    {
+
+        homeParams = new ArrayList<>();
+        homeParams.add("id serial PRIMARY KEY");
+        homeParams.add("home VARCHAR(50) UNIQUE");
+        
+
+        roomParams = new ArrayList<>();
+        roomParams.add("id serial PRIMARY KEY");
+        roomParams.add("room VARCHAR(50) NOT NULL");
+        roomParams.add("home VARCHAR(50) REFERENCES homes(home)");
+
+        objParams = new ArrayList<>();
+        objParams.add("id serial PRIMARY KEY");
+        objParams.add("object VARCHAR(50) NOT NULL");
+        objParams.add("room VARCHAR(50) ");
+        objParams.add("home VARCHAR(50) REFERENCES homes(home)");
+        objParams.add("description VARCHAR(2500)");
+        objParams.add("location VARCHAR(200)");
+        objParams.add("condition VARCHAR(200)");
+        objParams.add("price DECIMAL");
+        objParams.add("category VARCHAR(200)");
+        objParams.add("pic VARCHAR(200)");//location of pic
+
+        
+    }
+
     public boolean checkTable(ResultSet rs)
     {
+        System.out.println("Still Working");
+
         boolean tableExists = false;
         if(debug)System.out.println("Checking if table exists");
         try 
@@ -62,6 +90,7 @@ public class DBOps
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            System.out.println("I Failed in Checktable");
         }
 
 
@@ -133,9 +162,10 @@ public class DBOps
         }       
     }
 
+    //For Home
     public void deleteFromTableByName(String table, String toDelete, Statement stmt)
     {
-        String sql = "DELETE FROM " + table + " WHERE "+table+".name = '" + toDelete +"'";
+        String sql = "DELETE FROM " + table + " WHERE "+table+".home = '" + toDelete +"'";
         System.out.println(sql);
 
         try {
@@ -148,9 +178,10 @@ public class DBOps
 
     }
 
+    //For Room
     public void deleteFromTableByName(String table,String home, String toDelete, Statement stmt)
     {
-        String sql = "DELETE FROM " + table + " WHERE "+table+".name = '" + toDelete +"' AND "+ table+".home = '" + home + "'";
+        String sql = "DELETE FROM " + table + " WHERE "+table+".room = '" + toDelete +"' AND "+ table+".home = '" + home + "'";
         System.out.println(sql);
 
         try {
@@ -162,6 +193,22 @@ public class DBOps
         }     
 
     }
+
+    public void deleteFromTableByName(String table,String home, String room, String toDelete, Statement stmt)
+    {
+        String sql = "DELETE FROM " + table + " WHERE "+table+".object = '" + toDelete +"' AND "+ table+".home = '" + home + "' AND "+table+".room = '"+room+"'";
+        System.out.println(sql);
+
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("Failed to Execute Query");
+        }     
+
+    }
+
 
     public ArrayList<String> getRoomParams()
     {
@@ -172,5 +219,13 @@ public class DBOps
     {
         return homeParams;
     }
+
+    public ArrayList<String> getObjParams()
+    {
+        return objParams;
+    }
+
+
+
 
 }

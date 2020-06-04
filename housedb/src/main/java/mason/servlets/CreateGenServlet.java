@@ -14,11 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import mason.db.MyDatabase;
 import mason.db.interfaces.MyHome;
+import mason.db.interfaces.MyRoom;
 
 public class CreateGenServlet extends HttpServlet
 {
 
     private ArrayList<MyHome> mhl;
+    private ArrayList<MyRoom> mrl;
 
     @Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,11 +31,15 @@ public class CreateGenServlet extends HttpServlet
         MyDatabase db = new MyDatabase();
         Statement stmt = null;
         mhl = new ArrayList<>();
+        mrl = new ArrayList<>();
+
+        boolean debug = true;
 
         
         //get params
         String type = req.getParameter("type");
         String home = req.getParameter("home");
+        String room = req.getParameter("room");
 
 
 
@@ -44,9 +50,6 @@ public class CreateGenServlet extends HttpServlet
                 break;
 
             case "rooms":
-                System.out.println("*************  "+home + "************");
-
-
                 try
                 {
                     stmt = db.getConnection().createStatement();
@@ -55,10 +58,10 @@ public class CreateGenServlet extends HttpServlet
                     {
                         MyHome mh = new MyHome();
                         mh.id = rs.getInt("id");
-                        mh.home = rs.getString("name");
+                        mh.home = rs.getString("home");
                         mhl.add(mh);    
                     }
-                    System.out.println("Finnished grabbing rows from homes");
+                    if(debug)System.out.println("Finnished grabbing rows from homes");
         
                 }
                 catch (SQLException e) 
@@ -69,6 +72,31 @@ public class CreateGenServlet extends HttpServlet
                 }   
                 
                 printRooms(resp,home);
+                break;
+
+            case "objects":
+                try
+                {
+                    stmt = db.getConnection().createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM " + type);
+                    while(rs.next())
+                    {
+                        MyRoom mr = new MyRoom();
+                        mr.id = rs.getInt("id");
+                        mr.home = rs.getString("home");
+                        mrl.add(mr);    
+                    }
+                    if(debug)System.out.println("Finnished grabbing rows from homes");
+        
+                }
+                catch (SQLException e) 
+                {
+                    System.err.println("Something went wrong!");
+                    e.printStackTrace();
+                    return;
+                }   
+                
+                printObjects(resp,home,room);
                 break;
 
             default:
@@ -116,4 +144,36 @@ public class CreateGenServlet extends HttpServlet
 
         out.close();
     }
+
+    private void printObjects(HttpServletResponse resp, String home, String room) throws IOException
+    {
+        //Display List as links in html format
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter();
+        out.println("<a href=\"index.html\">Back</a>");
+        out.println("<p>Requested PRimary Key: "+room+"</p>");
+        
+        out.println("<p>Servlet Activated</p>");
+        out.println("<p>Entered a fatal program, press return if you want to live</p>");
+
+        out.println("<form action='CreateServlet' method='GET'");
+        out.println("<h4>Create Room<h4><br>");
+        out.println("<input type='text' name='object'>Object Name<br>");
+        out.println("<input type='text' name='description'>description<br>");
+        out.println("<input type='text' name='location'>location<br>");
+        out.println("<input type='text' name='condition'>condition<br>");
+        out.println("<input type='text' name='price'>price<br>");
+        out.println("<input type='text' name='category'>category<br>");
+        out.println("<input type='text' name='pic'>pic<br>");
+
+
+        out.println("<input type='hidden' name='room' value='"+room+"'/>");
+        out.println("<input type='hidden' name='home' value='" + home + "'/>");
+        out.println("<input type='hidden' name='type' value='objects'>");
+        out.println("<input type='submit' name='submit' value='submit'>");
+        out.println("</form>");
+
+        out.close();
+    }
+
 }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import mason.db.MyDatabase;
 import mason.db.interfaces.MyHome;
+import mason.db.interfaces.MyObject;
 import mason.db.interfaces.MyRoom;
 import mason.db.io.DBOps;
 
@@ -34,12 +35,14 @@ public class ListServlet extends HttpServlet
 
     String type;
     String home;
+    String room;
 
     @Override
     public void init() throws ServletException {
         // TODO Auto-generated method stub
         super.init();
         dbops = new DBOps();
+        db = new MyDatabase();
     }
 
     @Override
@@ -47,25 +50,27 @@ public class ListServlet extends HttpServlet
     {
         type = req.getParameter("type");
         home = req.getParameter("home");
+        room = req.getParameter("room");
 
+        db.fillStatement(type);
         switch(type)
         {
             case "homes":
                 if(debug)System.out.println("I am in Homes");
-                fillStatement();
-                if(!dbops.checkTable(tables))dbops.createTable(type,stmt,dbops.getHomeParams());//if not create it
+
+                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getHomeParams());//if not create it
         
                 ArrayList<MyHome> mhl = new ArrayList<>();
                 try
                 {
                     if(debug)System.out.println("I am trying to grab " + type);
-                    stmt = db.getConnection().createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM " + type);
+                    db.setStmt(db.getConnection().createStatement());
+                    ResultSet rs = db.getStmt().executeQuery("SELECT * FROM " + type);
                     while(rs.next())
                     {
                         MyHome mh = new MyHome();
                         mh.id = rs.getInt("id");
-                        mh.home = rs.getString("name");
+                        mh.home = rs.getString("home");
                         mhl.add(mh);    
                     }
                     System.out.println("Finnished grabbing rows from homes");
@@ -83,28 +88,27 @@ public class ListServlet extends HttpServlet
 
             case "rooms":
 
-                fillStatement();
-                if(!dbops.checkTable(tables))dbops.createTable(type,stmt,dbops.getRoomParams());//if not create it
+                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getRoomParams());//if not create it
                 ArrayList<MyRoom> mrl = new ArrayList<>();
                 boolean tableFound = false;
                 try
                 {        
-                    stmt = db.getConnection().createStatement();
+                    db.setStmt(db.getConnection().createStatement());
         
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM rooms WHERE home = '"+home+"'");
+                    ResultSet rs = db.getStmt().executeQuery("SELECT * FROM rooms WHERE home = '"+home+"'");
         
                     if(rs.next())
                     {
         
                         tableFound = true;
                         do
-                        {
-        
+                        {        
                             MyRoom mr = new MyRoom();
                             mr.id = rs.getInt("id");
-                            mr.room = rs.getString("name");
+                            mr.room = rs.getString("room");
                             mr.home = rs.getString("home");
                             mrl.add(mr);    
+
                         }while(rs.next());
         
                         if(debug)System.out.println("Finnished grabbing rows from rooms");
@@ -128,6 +132,64 @@ public class ListServlet extends HttpServlet
                 printRooms(resp,mrl,tableFound);
     
 
+                break;
+
+            case "objects":
+
+                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getObjParams());//if not create it
+                ArrayList<MyObject> mol = new ArrayList<>();
+                boolean otableFound = false;
+                try
+                { 
+       
+                    db.setStmt(db.getConnection().createStatement());
+                    System.out.println("**********1*************");
+
+                    System.out.println(room);
+                    ResultSet rs = db.getStmt().executeQuery("SELECT * FROM objects WHERE home = '"+home+"' AND room = '"+room+"'");
+                    System.out.println("***********************");
+        
+                    if(rs.next())
+                    {
+        
+                        otableFound = true;
+                        do
+                        {        
+                            MyObject mo = new MyObject();
+                            mo.id = rs.getInt("id");
+                            mo.object = rs.getString("object");
+                            mo.room = rs.getString("room");
+                            mo.home = rs.getString("home");
+                            mo.description = rs.getString("description");
+                            mo.location = rs.getString("location");
+                            mo.price = rs.getDouble("price");
+                            mo.category = rs.getString("category");
+                            mo.pic = rs.getString("pic");
+
+                            mol.add(mo);    
+
+                        }while(rs.next());
+        
+                        if(debug)System.out.println("Finnished grabbing rows from rooms");
+                    }
+                    else
+                    {
+        
+                        if(debug)System.out.println("No Objects Found");
+                        otableFound = false;
+                    }
+        
+                }
+                catch (SQLException e) 
+                {
+                    System.err.println("Something went wrong!");
+        
+                    e.printStackTrace();
+                    return;
+                }
+
+                printObjects(resp,mol,otableFound);
+                
                 break;
 
             default:
@@ -196,13 +258,13 @@ public class ListServlet extends HttpServlet
             for(MyRoom mr : mrl)
             {
                 System.out.println("Creating Room Link");
-                resp.getWriter().println("<a href=ListRoomsServlet?room="+mr.room + "&home=" +mr.home+ "&type=rooms>" + mr.room + 
+                resp.getWriter().println("<a href=ListServlet?room="+mr.room + "&home=" +mr.home+ "&type=objects>" + mr.room + 
                 "</a><br>");
             }
 
             out.println("<br><br><a href='CreateGenServlet?home="+home+
-            "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?home="+
-            home+"&type=rooms'>Destroy Room</a>");
+            "&type=objects'>Create Object</a><br><a href='DestroyGenServlet?home="+
+            home+"&type=objects'>Destroy Object</a>");
 
         }       
         else
@@ -211,8 +273,8 @@ public class ListServlet extends HttpServlet
             out.println("<p>Requested Key: " + home+"</p>");
 
             out.println("<br><br><a href='CreateGenServlet?home="+home+
-            "&type=rooms'>Create Room</a><br><a href='DestroyGenServlet?home="+
-            home+"&type=rooms'>Destroy Room</a>");
+            "&type=objects'>Create Object</a><br><a href='DestroyGenServlet?home="+
+            home+"&type=objects'>Destroy Object</a>");
 
             
 
@@ -220,5 +282,53 @@ public class ListServlet extends HttpServlet
         out.close();
 
     }
+
+
+
+    private void printObjects(HttpServletResponse resp, ArrayList<MyObject> mol, boolean tableFound)
+            throws IOException
+    {
+        PrintWriter out = resp.getWriter();
+
+        if(tableFound)
+        {
+            System.out.println("Creating Object Link");
+
+            //Display List as links in html format
+            resp.setContentType("text/html");
+            out.println("<a href=\"index.html\">Back</a>");
+            
+            resp.getWriter().println("<p>Servlet Activated</p>");
+            resp.getWriter().println("<p>Entered a fatal program, press return if you want to live</p>");
+            //Create links for homes
+            for(MyObject mo : mol)
+            {
+                System.out.println("Creating ObjectLink Link");
+
+                resp.getWriter().println("<a href=ListServlet?object="+mo.object+"&room="+mo.room +
+                 "&home=" +mo.home+ "&type=objects>" + mo.object + "</a><br>");
+            }
+
+            out.println("<br><br><a href='CreateGenServlet?room="+room+"&home="+home+
+            "&type=objects'>Create Object</a><br><a href='DestroyGenServlet?room="+room+"&home="+
+            home+"&type=objects'>Destroy Object</a>");
+
+        }       
+        else
+        {
+            out.println("<p> No Objects Found</p>");
+            out.println("<p>Requested Key: " + home +"</p>");
+
+            out.println("<br><br><a href='CreateGenServlet?room="+room+"&home="+home+
+            "&type=objects'>Create Object</a><br><a href='DestroyGenServlet?room="+room+"home="+
+            home+"&type=objects'>Destroy Object</a>");
+
+            
+
+        }
+        out.close();
+
+    }
+
 
 }

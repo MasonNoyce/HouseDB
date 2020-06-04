@@ -20,8 +20,17 @@ public class CreateServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
     boolean debug = true;
+    String object;
     String room;
     String home;
+
+    String description;
+    String location;
+    String condition;
+    String price;
+    String category;
+    String pic;
+
     String type;
     Statement stmt;
 
@@ -37,44 +46,51 @@ public class CreateServlet extends HttpServlet
         // TODO Auto-generated method stub
         super.init();
         dbops = new DBOps();
-
+        db = new MyDatabase();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
     {
+        object = req.getParameter("object");
         room = req.getParameter("room");
         home = req.getParameter("home");
         type = req.getParameter("type");
 
-        fillStatement();
+        description = req.getParameter("description");
+        location = req.getParameter("location");
+        condition = req.getParameter("condition");
+        price = req.getParameter("price");
+        category = req.getParameter("category");
+        pic = req.getParameter("pic");
+
+
+
+        db.fillStatement(type);
 
         ArrayList<String> valuens = new ArrayList<>();
         ArrayList<String> values = new ArrayList<>();
-        System.out.println("***********Home SElected**********");
-        System.out.println(type);
 
         switch(type)
         {
             case "homes":
-                System.out.println("***********Home SElected**********");
                 //Select columns to change
-                valuens.add("name");
+                valuens.add("home");
 
                 //Select values to fill columns
                 values.add("'"+home+"'");
 
                 //Insert into table
-                dbops.insertIntoTable(type, stmt,valuens,values);
+                dbops.insertIntoTable(type, db.getStmt(),valuens,values);
 
                 printHomes(resp);
                 break;
 
             case "rooms":
-                if(!dbops.checkTable(tables))dbops.createTable(type,stmt,dbops.getRoomParams());//if not create it
+                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getRoomParams());//if not create it
 
                 //Select columns to change
-                valuens.add("name");
+                valuens.add("room");
                 valuens.add("home");
 
                 //Select values to fill columns
@@ -82,7 +98,44 @@ public class CreateServlet extends HttpServlet
                 values.add("'"+home+"'");
 
                 //Insert into table
-                dbops.insertIntoTable(type, stmt,valuens,values);
+                dbops.insertIntoTable(type, db.getStmt(),valuens,values);
+
+                printRooms(resp);
+
+
+                
+                break;
+
+            case "objects":
+                if(!dbops.checkTable(db.getTables()))dbops.createTable(type,db.getStmt(),dbops.getRoomParams());//if not create it
+
+                //Select columns to change
+                valuens.add("room");
+                valuens.add("home");
+                valuens.add("object");
+                valuens.add("description");
+                valuens.add("location");
+                valuens.add("condition");
+                valuens.add("price");
+                valuens.add("category");
+                valuens.add("pic");
+
+                //Select values to fill columns
+                values.add("'"+room+"'");
+                values.add("'"+home+"'");
+                values.add("'"+object+"'");
+                values.add("'"+description+"'");
+                values.add("'"+location+"'");
+                values.add("'"+condition+"'");
+                values.add("'"+price+"'");
+                values.add("'"+category+"'");
+                values.add("'"+pic+"'");
+
+
+
+
+                //Insert into table
+                dbops.insertIntoTable(type, db.getStmt(),valuens,values);
 
                 printRooms(resp);
 
@@ -96,24 +149,9 @@ public class CreateServlet extends HttpServlet
         }
 
     }
-    private void fillStatement()
-    {
 
-        db = new MyDatabase();
-        try 
-        {
-            dbm = db.getConnection().getMetaData();
-            tables = dbm.getTables(null,null,type,null);
-            stmt = db.getConnection().createStatement();
-        } 
-        catch (SQLException e) 
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.out.println("Failed to connect to metadata");
-        }
 
-    } 
+
 
     private void printRooms(HttpServletResponse resp) throws IOException
     {
@@ -124,7 +162,7 @@ public class CreateServlet extends HttpServlet
         out.println("<p> This is the param: " + home + "</p>");
         out.close();
     }
-
+   
     private void printHomes(HttpServletResponse resp) throws IOException
     {
         // createPage
@@ -133,6 +171,18 @@ public class CreateServlet extends HttpServlet
         out.println("<a href=\"index.html\">Back</a>");
         out.println("<p>Servlet Activated</p>");
         out.println("<p>Home "+home+" was created</p>");
+        out.close();
+
+    }
+
+    private void printObjects(HttpServletResponse resp) throws IOException
+    {
+        // createPage
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter();
+        out.println("<a href=\"index.html\">Back</a>");
+        out.println("<p>Servlet Activated</p>");
+        out.println("<p>Object "+object+" was created</p>");
         out.close();
 
     }

@@ -2,22 +2,24 @@ package mason.db;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class MyDatabase {
+
+    DatabaseMetaData dbm;
+    ResultSet tables;
+    Statement stmt;
+
     private static MyDatabase instance = null;
 
     private int id;//for testing
     boolean debug = true;
 
     private Connection c = null;//connection for postgres db
-
-
-
 
     public MyDatabase()
     {
@@ -30,7 +32,6 @@ public class MyDatabase {
         dbConnect();
 
     }
-
     public static MyDatabase getInstance()
     {
         if(instance == null)
@@ -40,12 +41,6 @@ public class MyDatabase {
         }
         return instance;
     }
-
-    public int getID()
-    {
-        return id;
-    }
-
     private void dbConnect()
     {
         try 
@@ -66,12 +61,42 @@ public class MyDatabase {
         }
         System.out.println("Opened database successfully");
     }
-
     public Connection getConnection()
     {
         return c;
     }
+    public void fillStatement(String type)
+    {
+        try 
+        {
+            dbm = getConnection().getMetaData();
+            tables = dbm.getTables(null,null,type,null);
+            stmt = getConnection().createStatement();
+        } 
+        catch (SQLException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("Failed to connect to metadata");
+        }
+    }
+    public int getID()
+    {
+        return id;
+    }
+    public Statement getStmt()
+    {
+        return stmt;
+    }
 
-    
+    public void setStmt(Statement s)
+    {
+        stmt = s;
+    }
+
+    public ResultSet getTables()
+    {
+        return tables;
+    }
     
 }

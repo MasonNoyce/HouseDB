@@ -20,6 +20,7 @@ public class DestroyServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
 
+    String object;
     String room;
     String home;
     String type;
@@ -39,39 +40,59 @@ public class DestroyServlet extends HttpServlet
     {
         super.init();
         dbops = new DBOps();
+        db = new MyDatabase();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
     {
+        System.out.println("I made it here");
+
+        object = req.getParameter("object");
         room = req.getParameter("room");
         home = req.getParameter("home");
         type = req.getParameter("type");
 
-        fillStatement();
+        System.out.println("I made it here too");
+
+        System.out.println(type);
+        db.fillStatement(type);
 
         ArrayList<String> params;
+
         switch(type)
         {
             case "rooms":
+
                 params = dbops.getRoomParams();
+
                 break;
             case "homes":
                 params = dbops.getHomeParams();
                 break;
 
+            case "objects":
+                params = dbops.getObjParams();
+                break;
+
             default:
                 break;
         }
-        if(!dbops.checkTable(tables))dbops.createTable(type,stmt,dbops.getRoomParams());//if not create it
+        System.out.println("Still Working******************");
+
+//        if(!dbops.checkTable(db.getTables()))dbops.createTable(type, db.getStmt(), dbops.getRoomParams());//if not create it
 
         switch(type)
         {
             case "rooms":
-                dbops.deleteFromTableByName(type, home,room, stmt);
+                dbops.deleteFromTableByName(type, home,room, db.getStmt());
                 break;
             case "homes":
-                dbops.deleteFromTableByName(type, home, stmt);
+                dbops.deleteFromTableByName(type, home, db.getStmt());
+                break;
+
+            case "objects":
+                dbops.deleteFromTableByName(type, home, room,object, db.getStmt());
                 break;
             default:
                 break;
@@ -86,25 +107,6 @@ public class DestroyServlet extends HttpServlet
         resp.getWriter().println("<p>Servlet Activated</p>");
         resp.getWriter().println("<p>" + type +" " + room +" was Destroyed</p>");
         out.close();
-
-    }
-
-
-    private void fillStatement()
-    {
-        db = new MyDatabase();
-        try 
-        {
-            dbm = db.getConnection().getMetaData();
-            tables = dbm.getTables(null,null,type,null);
-            stmt = db.getConnection().createStatement();
-        } 
-        catch (SQLException e) 
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.out.println("Failed to connect to metadata");
-        }
 
     }
 
