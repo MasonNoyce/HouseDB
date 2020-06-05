@@ -16,8 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.omg.CORBA.portable.InputStream;
 
 import mason.db.MyDatabase;
+import mason.db.interfaces.MyHome;
 import mason.db.interfaces.MyObject;
+import mason.db.interfaces.MyRoom;
 import mason.db.io.DBOps;
+import mason.db.io.printhandler.PrintHandler;
 
 public class ObjectServlet extends HttpServlet
 {
@@ -25,7 +28,22 @@ public class ObjectServlet extends HttpServlet
 
     MyDatabase db;
     DBOps dbops;
+
+    String object;
+    String room;
+    String home;
+
+    String type;
+
+    ArrayList<MyHome> mhl;
+    ArrayList<MyRoom> mrl;
     ArrayList<MyObject> mol;
+
+    boolean tableFound = false;
+
+    String stype = "os";
+    
+    PrintHandler ph;
 
     @Override
     public void init() throws ServletException {
@@ -34,16 +52,17 @@ public class ObjectServlet extends HttpServlet
         db = new MyDatabase();
         dbops = new DBOps();
         mol = new ArrayList<>();
+        ph = new PrintHandler();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
     {
-        String object = req.getParameter("object");
-        String room = req.getParameter("room");
-        String home = req.getParameter("home");
+        object = req.getParameter("object");
+        room = req.getParameter("room");
+        home = req.getParameter("home");
 
-        String type = req.getParameter("type");
+        type = req.getParameter("type");
 
         db.fillStatement(type);
         
@@ -79,32 +98,7 @@ public class ObjectServlet extends HttpServlet
             return;
         }
 
-        printObject(mol,resp);
-
+        ph.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
     }
 
-    private void printObject(ArrayList<MyObject> mol, HttpServletResponse resp) throws IOException
-    {
-                //Display List as links in html format
-                resp.setContentType("text/html");
-                PrintWriter out = resp.getWriter();
-                out.println("<a href=\"index.html\">Back</a>");
-                
-                resp.getWriter().println("<p>Servlet Activated</p>");
-                resp.getWriter().println("<p>Entered a fatal program, press return if you want to live</p>");
-                //Create links for homes
-                
-                
-                resp.getWriter().println("<p> "+mol.get(0).home + " :" + mol.get(0).room  + " : " 
-                    + mol.get(0).object + " :" + mol.get(0).id + " :" + mol.get(0).condition
-                    + " :" + mol.get(0).price+ " :" + mol.get(0).location+ " :" + mol.get(0).category
-                    + " :" + mol.get(0).description +   "</p><br>");
-                
-        
-
-                        
-        
-                out.close();  
-
-    }
 }

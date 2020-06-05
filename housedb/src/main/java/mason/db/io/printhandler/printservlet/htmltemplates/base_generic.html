@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    [HEAD]
+ 
+    <!-- Top Image -->
+<!--    <header>
+        <div class="row d-flex align-items-center justify-content-center logocontainer">
+                <img src="Images/GalaxySpread.jpg" class="logoback" >        
+                <img src="Images/circle-insights.png" class="logo">
+        </div>
+    </header>-->
+    <!-- TopImage-->
+
+	<!--Body-->
+    <body style="background-color:black;">
+    
+        <!--SideBar-->
+        <div class="d-flex" id="wrapper">
+
+
+            [SIDEBAR]
+
+            
+            
+                
+            <!--pageContentWrapper-->
+            <div id="page-content-wrapper" >
+                [NAVBAR]
+
+                [CONTENT]
+
+                    
+            </div>
+            <!--PageContentWrapper-->
+                    
+        </div>
+
+		[FOOTER]
+
+
+        <!--Unlocks tooltips for hovering over items-->
+        <script>
+			$(document).ready(function()
+			{
+				$('[data-toggle="tooltip"]').tooltip();   
+			});
+        </script>
+        
+
+	  <!-- Menu Toggle Script -->
+	  <script>
+		$("#menu-toggle").click(function(e) 
+		{
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+	  </script>
+
+
+	  
+    </body>
+	
+	
+	
+
+
+</html>

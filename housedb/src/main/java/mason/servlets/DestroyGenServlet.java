@@ -16,9 +16,30 @@ import mason.db.MyDatabase;
 import mason.db.interfaces.MyHome;
 import mason.db.interfaces.MyObject;
 import mason.db.interfaces.MyRoom;
+import mason.db.io.printhandler.PrintHandler;
 
 public class DestroyGenServlet extends HttpServlet
 {
+    MyDatabase db;
+    PrintHandler ph;
+
+    ArrayList<MyHome> mhl;
+    ArrayList<MyRoom> mrl;
+    ArrayList<MyObject> mol;
+
+    boolean tableFound = false;
+
+    String stype = "dgs";
+
+    @Override
+    public void init() throws ServletException {
+        // TODO Auto-generated method stub
+        super.init();
+        db = new MyDatabase();
+        ph = new PrintHandler();
+    }
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
     {
@@ -27,14 +48,13 @@ public class DestroyGenServlet extends HttpServlet
         String room = req.getParameter("room");
 
         
-        MyDatabase db = new MyDatabase();
         Statement stmt = null;
 
         switch(type)
         {
 
             case "objects":
-                ArrayList<MyObject> mol = new ArrayList<>();
+                mol = new ArrayList<>();
 
                 try
                 {
@@ -58,13 +78,14 @@ public class DestroyGenServlet extends HttpServlet
                     e.printStackTrace();
                     return;
                 }
-                printObjects(resp,mol,home,room);
+                ph.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
+                //ph.printDestroyGen(resp,mol,home,room);
                 
                 break;
 
 
             case "rooms":
-                ArrayList<MyRoom> mrl = new ArrayList<>();
+                mrl = new ArrayList<>();
 
                 try
                 {
@@ -87,12 +108,13 @@ public class DestroyGenServlet extends HttpServlet
                     e.printStackTrace();
                     return;
                 }
-                printRooms(resp,mrl,home);
+                ph.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
+                //ph.printDestroyGen(resp,mrl,home);
                 
                 break;
 
             case "homes":
-                ArrayList<MyHome> mhl = new ArrayList<>();
+                mhl = new ArrayList<>();
                 try
                 {
                     stmt = db.getConnection().createStatement();
@@ -115,7 +137,8 @@ public class DestroyGenServlet extends HttpServlet
                     e.printStackTrace();
                     return;
                 }
-                printHomes(resp,mhl); 
+                ph.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
+                //ph.printDestroyGen(resp,mhl); 
 
                 break;
 
@@ -124,99 +147,6 @@ public class DestroyGenServlet extends HttpServlet
         }
     }
     
-    private void printHomes(HttpServletResponse resp, ArrayList<MyHome> mhl ) throws IOException
-    {
-        //Display List as links in html format
-        resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-        out.println("<a href=\"index.html\">Back</a>");
-        
-        out.println("<p>Servlet Activated</p>");
-        out.println("<p>Entered a fatal program, press return if you want to live</p>");
-        for(MyHome mh : mhl)
-        {
-            out.println("<p>" + mh.home + "  :  " + mh.id + "</p>");
-        }
 
-        out.println("<form action='DestroyServlet' method='GET'");
-        out.println("<label for='homes'> Choose Home To Destroy</label>");
-        out.println("<select id='homes' name='home'>");
-        for(MyHome mh : mhl)
-        {
-            out.println("<option value='" + mh.home + "'>" + mh.home + "</option>");
-        }
-        out.println("</select>");
-        out.println("<input type='hidden' name='type' value='homes'/>");
-
-        out.println("<input type='submit'>");
-
-        out.println("</form>");
-
-        out.close();
-    }
-
-    private void printRooms(HttpServletResponse resp, ArrayList<MyRoom> mrl, String home) throws IOException
-    {
-        //Display List as links in html format
-        resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-        out.println("<a href=\"index.html\">Back</a>");
-        
-        out.println("<p>Servlet Activated</p>");
-        out.println("<p>Entered a fatal program, press return if you want to live</p>");
-        for(MyRoom mr : mrl)
-        {
-            out.println("<p>" + mr.room + "  :  " + mr.id + " : "+ mr.home + "</p>");
-        }
-
-        out.println("<form action='DestroyServlet' method='GET'");
-        out.println("<label for='rooms'> Choose Home To Destroy</label>");
-        out.println("<select id='rooms' name='room'>");
-        for(MyRoom mr : mrl)
-        {
-            out.println("<option value='" + mr.room + "'>" + mr.room + "</option>");
-        }
-        out.println("</select>");
-        out.println("<input type='hidden' name='home' value='" + home + "'/>");
-        out.println("<input type='hidden' name='type' value='rooms'/>");
-
-        out.println("<input type='submit'>");
-        out.println("</form>");
-
-        out.close();
-    }
-
-    private void printObjects(HttpServletResponse resp, ArrayList<MyObject> mol, String home,String room) throws IOException
-    {
-        //Display List as links in html format
-        resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-        out.println("<a href=\"index.html\">Back</a>");
-        
-        out.println("<p>Servlet Activated</p>");
-        out.println("<p>Entered a fatal program, press return if you want to live</p>");
-        for(MyObject mo : mol)
-        {
-            out.println("<p>" +mo.object + "   :   "+ mo.room + "  :  " + mo.id + " : "+ mo.home + "</p>");
-        }
-
-        out.println("<form action='DestroyServlet' method='GET'");
-        out.println("<label for='objects'> Choose Home To Destroy</label>");
-        out.println("<select id='objects' name='object'>");
-        for(MyObject mo : mol)
-        {
-            out.println("<option value='" + mo.object + "'>" + mo.object + "</option>");
-        }
-        out.println("</select>");
-        out.println("<input type='hidden' name='home' value='" + home + "'/>");
-        out.println("<input type='hidden' name='room' value='" + room + "'/>");
-
-        out.println("<input type='hidden' name='type' value='objects'/>");
-
-        out.println("<input type='submit'>");
-        out.println("</form>");
-
-        out.close();
-    }
     
 }

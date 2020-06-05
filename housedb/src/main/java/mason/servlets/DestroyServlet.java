@@ -14,7 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mason.db.MyDatabase;
+import mason.db.interfaces.MyHome;
+import mason.db.interfaces.MyObject;
+import mason.db.interfaces.MyRoom;
 import mason.db.io.DBOps;
+import mason.db.io.printhandler.PrintHandler;
 
 public class DestroyServlet extends HttpServlet
 {
@@ -34,6 +38,16 @@ public class DestroyServlet extends HttpServlet
 
     DBOps dbops;
 
+    ArrayList<MyHome> mhl;
+    ArrayList<MyRoom> mrl;
+    ArrayList<MyObject> mol;
+
+    boolean tableFound = false;
+
+    String stype = "ds";
+
+    PrintHandler ph;
+
 
     @Override
     public void init() throws ServletException
@@ -41,6 +55,12 @@ public class DestroyServlet extends HttpServlet
         super.init();
         dbops = new DBOps();
         db = new MyDatabase();
+        
+        mhl = new ArrayList<>();
+        mrl = new ArrayList<>();
+        mol = new ArrayList<>();
+
+        ph = new PrintHandler();
     }
 
     @Override
@@ -98,15 +118,9 @@ public class DestroyServlet extends HttpServlet
                 break;
         }
 
+        ph.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
         // createPage
-        resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-        
-                
-        out.println("<a href=\"index.html\">Back</a>");
-        resp.getWriter().println("<p>Servlet Activated</p>");
-        resp.getWriter().println("<p>" + type +" " + room +" was Destroyed</p>");
-        out.close();
+
 
     }
 

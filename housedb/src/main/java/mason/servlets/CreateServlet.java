@@ -14,7 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mason.db.MyDatabase;
+import mason.db.interfaces.MyHome;
+import mason.db.interfaces.MyObject;
+import mason.db.interfaces.MyRoom;
 import mason.db.io.DBOps;
+import mason.db.io.printhandler.PrintHandler;
 
 public class CreateServlet extends HttpServlet 
 {
@@ -32,13 +36,22 @@ public class CreateServlet extends HttpServlet
     String pic;
 
     String type;
+    String stype = "cs";
     Statement stmt;
+
+    ArrayList<MyHome> mhl;
+    ArrayList<MyRoom> mrl;
+    ArrayList<MyObject> mol;
+
+    boolean tableFound = false;
 
     MyDatabase db;
     DatabaseMetaData dbm;
     ResultSet tables;
 
     DBOps dbops;
+
+    PrintHandler ph;
 
     @Override
     public void init() throws ServletException 
@@ -47,6 +60,11 @@ public class CreateServlet extends HttpServlet
         super.init();
         dbops = new DBOps();
         db = new MyDatabase();
+        ph = new PrintHandler();
+
+        mhl = new ArrayList<>();
+        mrl = new ArrayList<>();
+        mol = new ArrayList<>();
     }
 
     @Override
@@ -83,7 +101,8 @@ public class CreateServlet extends HttpServlet
                 //Insert into table
                 dbops.insertIntoTable(type, db.getStmt(),valuens,values);
 
-                printHomes(resp);
+                ph.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
+//                ph.printCreate(resp,home);
                 break;
 
             case "rooms":
@@ -100,7 +119,8 @@ public class CreateServlet extends HttpServlet
                 //Insert into table
                 dbops.insertIntoTable(type, db.getStmt(),valuens,values);
 
-                printRooms(resp);
+                ph.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
+//                ph.printCreate(resp,room);
 
 
                 
@@ -137,7 +157,8 @@ public class CreateServlet extends HttpServlet
                 //Insert into table
                 dbops.insertIntoTable(type, db.getStmt(),valuens,values);
 
-                printRooms(resp);
+                ph.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
+//                ph.printCreate(resp,object);
 
 
                 
