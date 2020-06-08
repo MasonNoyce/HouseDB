@@ -122,10 +122,10 @@ public class PrintHandler
         pd.printDestroy(resp, out);  
     }
 
-    public void printObject(ArrayList<MyObject> mol, HttpServletResponse resp) throws IOException
+    public void printObject(ArrayList<MyObject> mol, HttpServletResponse resp, PrintWriter out) throws IOException
     {
 
-        po.printObject(mol,resp);
+        po.printObject(mol,resp, out);
 
     }
 

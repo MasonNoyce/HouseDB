@@ -84,6 +84,7 @@ public class MyServer {
 
         server.addServlet("/MyHomeDatabase", "ObjectServlet", new ObjectServlet()).addMapping("/ObjectServlet");
 
+        server.addServlet("/MyHomeDatabase", "UploadServlet", new UploadServlet()).addMapping("/UploadServlet");
 
 
 

@@ -10,28 +10,26 @@ import mason.db.interfaces.MyObject;
 
 public class PrintObject {
     
-    public void printObject(ArrayList<MyObject> mol, HttpServletResponse resp) throws IOException
+    public void printObject(ArrayList<MyObject> mol, HttpServletResponse resp, PrintWriter out) throws IOException
     {
         //Display List as links in html format
         resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
         out.println("<a href=\"index.html\">Back</a>");
         
-        resp.getWriter().println("<p>Servlet Activated</p>");
-        resp.getWriter().println("<p>Entered a fatal program, press return if you want to live</p>");
+        out.println("<p>Servlet Activated</p>");
+        out.println("<p>Entered a fatal program, press return if you want to live</p>");
         //Create links for homes
         
         
-        resp.getWriter().println("<p> "+mol.get(0).home + " :" + mol.get(0).room  + " : " 
+        out.println("<p> "+mol.get(0).home + " :" + mol.get(0).room  + " : " 
             + mol.get(0).object + " :" + mol.get(0).id + " :" + mol.get(0).condition
             + " :" + mol.get(0).price+ " :" + mol.get(0).location+ " :" + mol.get(0).category
             + " :" + mol.get(0).description +   "</p><br>");
         
 
-
+        out.println("<img src='images/tv.jpg' alt='Girl in a jacket' width='500' height='600'>");
                 
 
-        out.close();  
 
     }
     

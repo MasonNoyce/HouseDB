@@ -13,7 +13,8 @@ public class PrintDestroy {
         resp.setContentType("text/html");
                 
         out.println("<a href=\"index.html\">Back</a>");
-        resp.getWriter().println("<p>Servlet Activated</p>");
-        resp.getWriter().println("<p> was Destroyed</p>");
+        out.println("<p>Servlet Activated</p>");
+        out.println("<p> was Destroyed</p>");
+
     }
 }

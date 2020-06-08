@@ -267,16 +267,12 @@ public class PrintResponse
 
             case "os":
                 try {
-                    ph.printObject(mol, resp);
+                    ph.printObject(mol, resp,out);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 break;
         }
-
-
     }
-
-
 }
