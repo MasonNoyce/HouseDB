@@ -53,14 +53,14 @@ public class DestroyServlet extends HttpServlet
     public void init() throws ServletException
     {
         super.init();
-        dbops = new DBOps();
-        db = new MyDatabase();
+        dbops = DBOps.getInstance();
+        db = MyDatabase.getInstance();
         
         mhl = new ArrayList<>();
         mrl = new ArrayList<>();
         mol = new ArrayList<>();
 
-        ph = new PrintHandler();
+        ph = PrintHandler.getInstance();
     }
 
     @Override

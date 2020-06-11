@@ -7,6 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PrintDestroy {
 
+    private static PrintDestroy instance = null;
+
+    public static PrintDestroy getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new PrintDestroy();
+        }
+        return instance;
+    }
+
     public void printDestroy(HttpServletResponse resp, PrintWriter out) throws IOException
     {
         // createPage

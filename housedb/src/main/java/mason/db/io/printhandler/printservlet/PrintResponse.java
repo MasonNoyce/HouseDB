@@ -22,10 +22,21 @@ public class PrintResponse
 {
     PrintHandler ph;
 
+    private static PrintResponse instance = null;
+
+    public static PrintResponse getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new PrintResponse();
+        }
+        return instance;
+    }
+
     public void printResponse(HttpServletResponse resp, ArrayList<MyHome> mhl, ArrayList<MyRoom> mrl, ArrayList<MyObject> mol,
     boolean tableFound, String home, String room, String type, String stype) 
     {
-        ph = new PrintHandler();
+        ph = PrintHandler.getInstance();
         String relativePath = "src/main/java/mason/db/io/printhandler/printservlet/htmltemplates/";
         File file = new File(relativePath + "base_generic.html");
         resp.setContentType("text/html");

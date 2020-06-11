@@ -29,17 +29,17 @@ public class PrintHandler
 
 
     private static PrintHandler instance = null;
-    public PrintHandler()
+    private PrintHandler()
     {
         if(debug)System.out.println("PrintHandlerCalled");
-        pl = new PrintList();
-        pcg = new PrintCreateGen();
-        pc = new PrintCreate();
-        pdg = new PrintDestroyGen();
-        pd = new PrintDestroy();
-        po = new PrintObject();
-        phtml = new PrintHtml();
-        presp = new PrintResponse();
+        pl = PrintList.getInstance();
+        pcg = PrintCreateGen.getInstance();
+        pc = PrintCreate.getInstance();
+        pdg = PrintDestroyGen.getInstance();
+        pd = PrintDestroy.getInstance();
+        po = PrintObject.getInstance();
+        phtml = PrintHtml.getInstance();
+        presp = PrintResponse.getInstance();
         
     }
 

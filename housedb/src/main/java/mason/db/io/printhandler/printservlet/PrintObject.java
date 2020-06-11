@@ -10,6 +10,17 @@ import mason.db.interfaces.MyObject;
 
 public class PrintObject {
     
+    private static PrintObject instance = null;
+
+    public static PrintObject getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new PrintObject();
+        }
+        return instance;
+    }
+
     public void printObject(ArrayList<MyObject> mol, HttpServletResponse resp, PrintWriter out) throws IOException
     {
         //Display List as links in html format

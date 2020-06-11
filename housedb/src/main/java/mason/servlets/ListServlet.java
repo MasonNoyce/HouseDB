@@ -53,9 +53,9 @@ public class ListServlet extends HttpServlet {
     public void init() throws ServletException {
         // TODO Auto-generated method stub
         super.init();
-        dbops = new DBOps();
-        db = new MyDatabase();
-        ph = new PrintHandler();
+        dbops = DBOps.getInstance();
+        db = MyDatabase.getInstance();
+        ph = PrintHandler.getInstance();
     }
 
     @Override

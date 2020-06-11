@@ -8,12 +8,13 @@ import mason.start.DBApp;
 public class App 
 {
     static boolean debug = true;
+    
     public static void main( String[] args )
     {
        
         if (debug==true) System.out.println( "Hello World! Starting App" );
         //Start HouseDB
-        DBApp houseDB = new DBApp();
+        DBApp houseDB = DBApp.getInstance();
 
     }
 }

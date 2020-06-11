@@ -49,10 +49,10 @@ public class ObjectServlet extends HttpServlet
     public void init() throws ServletException {
         // TODO Auto-generated method stub
         super.init();
-        db = new MyDatabase();
-        dbops = new DBOps();
+        db = MyDatabase.getInstance();
+        dbops = DBOps.getInstance();
         mol = new ArrayList<>();
-        ph = new PrintHandler();
+        ph = PrintHandler.getInstance();
     }
 
     @Override

@@ -9,10 +9,11 @@ import mason.server.MyServer;
 public class DBApp {
     private static DBApp instance = null;
 
+    private MyServer myServer = null;
     private int id;
     boolean debug = true;
 
-    public DBApp()
+    private DBApp()
     {
         if(debug == true)System.out.println("DBApp Creator Called");
 
@@ -20,10 +21,10 @@ public class DBApp {
         id = ThreadLocalRandom.current().nextInt(100000,999999);
 
         //Start DB
-        new MyDatabase();
+        MyDatabase.getInstance();
         
         //Start Server
-        new MyServer();
+        myServer = MyServer.getInstance();
     }
 
     public static DBApp getInstance()

@@ -58,9 +58,9 @@ public class CreateServlet extends HttpServlet
     {
         // TODO Auto-generated method stub
         super.init();
-        dbops = new DBOps();
-        db = new MyDatabase();
-        ph = new PrintHandler();
+        dbops = DBOps.getInstance();
+        db = MyDatabase.getInstance();
+        ph = PrintHandler.getInstance();
 
         mhl = new ArrayList<>();
         mrl = new ArrayList<>();

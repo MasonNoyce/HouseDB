@@ -23,5 +23,16 @@ public class AppTest
         assertTrue( true );
     }
 
-    
+/*     @Test
+    public void oneDBAppShouldBeCreated()
+    {
+        DBApp db1 = new DBApp();
+        DBApp db2 = new DBApp();
+
+        System.out.println(db1.getID() + "    " + db2.getID());
+
+        assertTrue("Singletons must have same id or they're not singletons", 
+        db1.getID()==db2.getID());        
+
+    } */
 }

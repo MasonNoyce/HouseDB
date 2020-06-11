@@ -7,6 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PrintCreateGen 
 {
+    private static PrintCreateGen instance;
+
+    public static PrintCreateGen getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new PrintCreateGen();
+        }
+        return instance;
+    }
 
     //For Home
     public void printCreateGen(HttpServletResponse resp) throws IOException

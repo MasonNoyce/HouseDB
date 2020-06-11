@@ -18,7 +18,7 @@ public class MyServer {
 
     Tomcat server = null;
 
-    public MyServer() {
+    private MyServer() {
         if (debug == true)
             System.out.println("MyServer Creator Called");
 

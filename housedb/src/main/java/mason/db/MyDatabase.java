@@ -21,7 +21,7 @@ public class MyDatabase {
 
     private Connection c = null;//connection for postgres db
 
-    public MyDatabase()
+    private MyDatabase()
     {
         if(debug == true)System.out.println("MyDatabase Creator Called");
 

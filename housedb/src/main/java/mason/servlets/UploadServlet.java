@@ -35,8 +35,8 @@ public class UploadServlet extends HttpServlet {
       // Check that we have a file upload request
       isMultipart = ServletFileUpload.isMultipartContent(request);
       response.setContentType("text/html");
-      String name = request.getParameter("name");
-      java.io.PrintWriter out = response.getWriter( );
+      String name;
+      java.io.PrintWriter out = response.getWriter();
    
       if( !isMultipart ) {
          out.println("<html>");
@@ -95,7 +95,14 @@ public class UploadServlet extends HttpServlet {
                }
                fi.write( file ) ;
                out.println("Uploaded Filename: " + fileName + "<br>");
-               out.println("Your name "+name);
+            }
+            else
+            {
+               name = fi.getFieldName();
+               String value = fi.getString();
+               out.println("Your "+name+" "+value);
+
+
             }
          }
          out.println("</body>");

@@ -12,6 +12,17 @@ import mason.db.interfaces.MyRoom;
 
 public class PrintDestroyGen {
 
+    private static PrintDestroyGen instance = null;
+
+    public static PrintDestroyGen getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new PrintDestroyGen();
+        }
+        return instance;
+    }
+
     public void printDestroyGen(HttpServletResponse resp, ArrayList<MyHome> mhl, PrintWriter out) throws IOException
     {
         //Display List as links in html format

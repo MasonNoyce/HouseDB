@@ -12,6 +12,17 @@ import mason.db.interfaces.MyRoom;
 
 public class PrintList {
  
+    private static PrintList instance = null;
+
+    public static PrintList getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new PrintList();
+        }
+        return instance;
+    }
+
     //For Home
     public void printList(HttpServletResponse resp, ArrayList<MyHome> mhl, PrintWriter out) throws IOException
     {

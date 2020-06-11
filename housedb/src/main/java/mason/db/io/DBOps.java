@@ -19,7 +19,7 @@ public class DBOps
 
     private static DBOps instance = null;
 
-    public DBOps()
+    private DBOps()
     {
         if(debug == true)System.out.println("DBOps Called");
         //Fill home params gen list

@@ -35,8 +35,8 @@ public class DestroyGenServlet extends HttpServlet
     public void init() throws ServletException {
         // TODO Auto-generated method stub
         super.init();
-        db = new MyDatabase();
-        ph = new PrintHandler();
+        db = MyDatabase.getInstance();
+        ph = PrintHandler.getInstance();
     }
 
 

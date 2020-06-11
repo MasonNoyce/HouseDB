@@ -37,8 +37,8 @@ public class CreateGenServlet extends HttpServlet
     public void init() throws ServletException {
         // TODO Auto-generated method stub
         super.init();
-        db = new MyDatabase();
-        ph = new PrintHandler();
+        db = MyDatabase.getInstance();
+        ph = PrintHandler.getInstance();
     }
 
 
@@ -48,7 +48,6 @@ public class CreateGenServlet extends HttpServlet
         //private static final long serialVersionUID = 1L;
 
         //make connection
-        MyDatabase db = new MyDatabase();
         Statement stmt = null;
         mhl = new ArrayList<>();
         mrl = new ArrayList<>();
