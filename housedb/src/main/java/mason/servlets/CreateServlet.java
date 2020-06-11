@@ -193,7 +193,6 @@ public class CreateServlet extends HttpServlet
     throws ServletException, java.io.IOException 
     {
  
-        filePath = getServletContext().getInitParameter("file-upload") + "resources/uploads/"+home+"/"+room+"/"; 
 
         // Check that we have a file upload request
         isMultipart = ServletFileUpload.isMultipartContent(req);
@@ -221,12 +220,12 @@ public class CreateServlet extends HttpServlet
             // Process the uploaded file items
             Iterator i = fileItems.iterator();
 
-            String fieldName;
-            String fileName;
-            String contentType;
-            boolean isInMemory;
-            long sizeInBytes;
-            FileItem picFile;
+            String fieldName = "";
+            String fileName = "";
+            String contentType = "";
+            boolean isInMemory = false;
+            long sizeInBytes = 0;
+            FileItem picFile = null;
 
             while ( i.hasNext () ) 
             {
@@ -241,13 +240,7 @@ public class CreateServlet extends HttpServlet
                     sizeInBytes = fi.getSize();
                     picFile = fi;
                 
-                    // Write the file
-                    if( fileName.lastIndexOf("\\") >= 0 ) {
-                        file = new File( filePath + fileName.substring( fileName.lastIndexOf("\\"))) ;
-                    } else {
-                        file = new File( filePath + fileName.substring(fileName.lastIndexOf("\\")+1)) ;
-                    }
-                    fi.write( file ) ;
+
                 }
                 else
                 {
@@ -274,6 +267,18 @@ public class CreateServlet extends HttpServlet
                         category = fi.getString();
 
                 }
+            }
+            if(!fileName.equals(""))
+            {
+                filePath = getServletContext().getInitParameter("file-upload") + "resources/uploads/"+home+"/"+room+"/"; 
+
+                // Write the file
+                if( fileName.lastIndexOf("\\") >= 0 ) {
+                    file = new File( filePath + fileName.substring( fileName.lastIndexOf("\\"))) ;
+                } else {
+                    file = new File( filePath + fileName.substring(fileName.lastIndexOf("\\")+1)) ;
+                }
+                picFile.write( file ) ;
             }
 
         } 

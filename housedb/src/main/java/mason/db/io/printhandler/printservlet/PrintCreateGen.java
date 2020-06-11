@@ -85,9 +85,9 @@ public class PrintCreateGen
         out.println("<input type='file' name='pic'>pic<br>");
 
 
-        out.println("<input type='text' name='room' value='"+room+"'/>");
-        out.println("<input type='text' name='home' value='"+home+"'/>");
-        out.println("<input type='text' name='type' value='objects'>");
+        out.println("<input type='hidden' name='room' value='"+room+"'/>");
+        out.println("<input type='hidden' name='home' value='"+home+"'/>");
+        out.println("<input type='hidden' name='type' value='objects'>");
         out.println("<input type='submit' name='submit' value='submit'>");
         out.println("</form>");
 
