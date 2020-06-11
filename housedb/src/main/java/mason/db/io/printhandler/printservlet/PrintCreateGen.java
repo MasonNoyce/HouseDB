@@ -74,7 +74,7 @@ public class PrintCreateGen
         out.println("<p>Servlet Activated</p>");
         out.println("<p>Entered a fatal program, press return if you want to live</p>");
 
-        out.println("<form action='CreateServlet' method='GET'");
+        out.println("<form action='CreateServlet' method='POST' enctype='multipart/form-data'");
         out.println("<h4>Create Room<h4><br>");
         out.println("<input type='text' name='object'>Object Name<br>");
         out.println("<input type='text' name='description'>description<br>");
@@ -82,12 +82,12 @@ public class PrintCreateGen
         out.println("<input type='text' name='condition'>condition<br>");
         out.println("<input type='text' name='price'>price<br>");
         out.println("<input type='text' name='category'>category<br>");
-        out.println("<input type='text' name='pic'>pic<br>");
+        out.println("<input type='file' name='pic'>pic<br>");
 
 
-        out.println("<input type='hidden' name='room' value='"+room+"'/>");
-        out.println("<input type='hidden' name='home' value='" + home + "'/>");
-        out.println("<input type='hidden' name='type' value='objects'>");
+        out.println("<input type='text' name='room' value='"+room+"'/>");
+        out.println("<input type='text' name='home' value='"+home+"'/>");
+        out.println("<input type='text' name='type' value='objects'>");
         out.println("<input type='submit' name='submit' value='submit'>");
         out.println("</form>");
 

@@ -26,11 +26,12 @@ public class UploadServlet extends HttpServlet {
 
    public void init( ){
       // Get the file location where it would be stored.
-      filePath = getServletContext().getInitParameter("file-upload"); 
+      filePath = getServletContext().getInitParameter("file-upload") + "resources/uploads/home/room/"; 
    }
    
    public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, java.io.IOException {
+         System.out.println(filePath);
    
       // Check that we have a file upload request
       isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -98,11 +99,14 @@ public class UploadServlet extends HttpServlet {
             }
             else
             {
-               name = fi.getFieldName();
-               String value = fi.getString();
-               out.println("Your "+name+" "+value);
+               String value;
+               if(fi.getFieldName().equals("type"));
+                  value = fi.getString();
+               if(fi.getFieldName().equals("name"))
+                  value = fi.getString();
+                  value = request.getParameter("type");
 
-
+               out.println("Your type: "+value);
             }
          }
          out.println("</body>");
