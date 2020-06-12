@@ -271,10 +271,10 @@ public class CreateServlet extends HttpServlet
             }
             if(!fileName.equals(""))
             {
-                fileName = UUID.randomUUID().toString();
+                fileName = UUID.randomUUID().toString() + ".jpg";
                 System.out.println("******NEW FILE NAME - " + fileName);
-                filePath = getServletContext().getInitParameter("file-upload") + "resources/uploads/"+home+"/"+room+"/"; 
-
+//                filePath = getServletContext().getInitParameter("file-upload") + "resources/uploads/"+home+"/"+room+"/"; 
+                filePath = "src/main/webapp/images/uploads/"+home+"/"+room+"/";
                 // Write the file
                 if( fileName.lastIndexOf("\\") >= 0 ) {
                     file = new File( filePath + fileName.substring( fileName.lastIndexOf("\\"))) ;
