@@ -4,6 +4,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -211,7 +212,7 @@ public class CreateServlet extends HttpServlet
 
         // maximum file size to be uploaded.
         upload.setSizeMax( maxFileSize );
-
+        String fileName = "";
         try 
         { 
             // Parse the request to get file items.
@@ -221,7 +222,7 @@ public class CreateServlet extends HttpServlet
             Iterator i = fileItems.iterator();
 
             String fieldName = "";
-            String fileName = "";
+
             String contentType = "";
             boolean isInMemory = false;
             long sizeInBytes = 0;
@@ -270,6 +271,8 @@ public class CreateServlet extends HttpServlet
             }
             if(!fileName.equals(""))
             {
+                fileName = UUID.randomUUID().toString();
+                System.out.println("******NEW FILE NAME - " + fileName);
                 filePath = getServletContext().getInitParameter("file-upload") + "resources/uploads/"+home+"/"+room+"/"; 
 
                 // Write the file
@@ -310,6 +313,7 @@ public class CreateServlet extends HttpServlet
         values.add("'"+condition+"'");
         values.add("'"+price+"'");
         values.add("'"+category+"'");
+        pic = fileName;
         values.add("'"+pic+"'");
 
 

@@ -199,6 +199,7 @@ public class ListServlet extends HttpServlet {
     }
 
     public void tableCheck(String type) {
+        System.out.println("Table Type: " + type);
         switch (type) {
             case "homes":
                 if (!dbops.checkTable(db.getTables()))

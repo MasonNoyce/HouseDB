@@ -121,10 +121,8 @@ public class PrintList {
             out.println("<p class='text-light'>Requested Key: " + home +"</p>");
 
             out.println("<br><br><a class='text-light' href='CreateGenServlet?room="+room+"&home="+home+
-            "&type=objects'>Create Object</a><br><a class='text-light' href='DestroyGenServlet?room="+room+"home="+
+            "&type=objects'>Create Object</a><br><a class='text-light' href='DestroyGenServlet?room="+room+"&home="+
             home+"&type=objects'>Destroy Object</a>");
-
-            
 
         }
 
