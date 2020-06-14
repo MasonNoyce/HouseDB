@@ -26,6 +26,7 @@ public class PrintHandler
     PrintObject po;
     PrintHtml phtml;
     PrintResponse presp;
+    PrintHome phome;
 
 
     private static PrintHandler instance = null;
@@ -40,6 +41,7 @@ public class PrintHandler
         po = PrintObject.getInstance();
         phtml = PrintHtml.getInstance();
         presp = PrintResponse.getInstance();
+        phome = PrintHome.getInstance();
         
     }
 
@@ -140,4 +142,14 @@ public class PrintHandler
         presp.printResponse(resp, mhl, mrl, mol, tableFound, home, room, type, stype);
     }
 
+    public void printResponse(HttpServletResponse resp)
+    {
+        if(debug)System.out.println("PrintResponseCalled");
+        presp.printResponse(resp);
+    }
+
+    public void printHome(HttpServletResponse resp,PrintWriter out) throws IOException
+    {
+        phome.printHome(resp,out);
+    }
 }

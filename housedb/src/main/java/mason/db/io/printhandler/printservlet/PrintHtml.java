@@ -12,6 +12,7 @@ import javax.xml.stream.util.StreamReaderDelegate;
 
 public class PrintHtml {
     public static PrintHtml instance = null;
+    boolean debug = false;
 
     public static PrintHtml getInstance() {
         if (instance == null) {
@@ -24,17 +25,18 @@ public class PrintHtml {
     public void printGen(HttpServletResponse resp,String filepath, PrintWriter out) {
         File file = new File(filepath);
         BufferedReader br;
-        System.out.println("printing html");
+        if(debug)System.out.println("printing html");
         try {
             br = new BufferedReader(new FileReader(file));
             String line = br.readLine();
-            
+            if(debug)System.out.println(line);
 
             while(line != null)
             {
 //                System.out.println(line);
                 out.write(line);
                 line = br.readLine();
+                if(debug)System.out.println(line);
             }
 
         } catch (FileNotFoundException e) {

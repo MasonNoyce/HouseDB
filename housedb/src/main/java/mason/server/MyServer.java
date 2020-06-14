@@ -34,7 +34,6 @@ public class MyServer {
 
         // Set Webapplications
         server.addWebapp("/MyHomeDatabase", new File("src/main/webapp").getAbsolutePath());
-
         //Set Servlets
         setServlets();
 
@@ -71,12 +70,9 @@ public class MyServer {
 
         server.addServlet("/MyHomeDatabase", "ListServlet", new ListServlet()).addMapping("/ListServlet");
 
-
         server.addServlet("/MyHomeDatabase", "CreateServlet", new CreateServlet()).addMapping("/CreateServlet");
 
-
         server.addServlet("/MyHomeDatabase", "CreateGenServlet", new CreateGenServlet()).addMapping("/CreateGenServlet");
-
 
         server.addServlet("/MyHomeDatabase", "DestroyServlet", new DestroyServlet()).addMapping("/DestroyServlet");
 
@@ -86,7 +82,7 @@ public class MyServer {
 
         server.addServlet("/MyHomeDatabase", "UploadServlet", new UploadServlet()).addMapping("/UploadServlet");
 
-
+        server.addServlet("/MyHomeDatabase", "HomeServlet", new HomeServlet()).addMapping("/HomeServlet");
 
     }
 

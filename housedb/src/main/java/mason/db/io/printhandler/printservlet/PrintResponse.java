@@ -20,6 +20,7 @@ import mason.db.io.printhandler.PrintHandler;
 
 public class PrintResponse 
 {
+    boolean debug = false;
     PrintHandler ph;
 
     private static PrintResponse instance = null;
@@ -31,6 +32,78 @@ public class PrintResponse
             instance = new PrintResponse();
         }
         return instance;
+    }
+
+    public void printResponse(HttpServletResponse resp)
+    {
+        if(debug)System.out.println("SinglePrintResponse Called");
+        ph = PrintHandler.getInstance();
+        String relativePath = "src/main/java/mason/db/io/printhandler/printservlet/htmltemplates/";
+        File file = new File(relativePath + "base_generic.html");
+        resp.setContentType("text/html"); 
+        if(debug)System.out.println("printing response now");
+ 
+        
+        try {
+            if(debug)System.out.println("Creating PrintWriter");
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            PrintWriter out = resp.getWriter();
+            String line = br.readLine();
+            if(debug)System.out.println("StartingToWrite");
+            if(debug)System.out.println("Line: " + line);
+
+
+            while(line != null)
+            {
+                if(debug)System.out.println("Line: " + line);
+                if(line.contains("[HEAD]"))
+                {
+                    if(debug)System.out.println("Head Printed");
+
+                    ph.printGen(resp,relativePath + "head.html",out);
+                }
+                else if(line.contains("[SIDEBAR]"))
+                {
+                    if(debug)System.out.println("Sidebar printed");
+
+                    ph.printGen(resp,relativePath + "sidebar.html",out);
+                }
+                else if(line.contains("[NAVBAR]"))
+                {
+                    if(debug)System.out.println("Navbar printed");
+
+                    ph.printGen(resp,relativePath + "navbar.html",out);
+                }
+                else if(line.contains("[FOOTER]"))
+                {
+                    if(debug)System.out.println("printing footer");
+                    ph.printGen(resp, relativePath + "footer.html",out);
+                }
+                else if(line.contains("[CONTENT]"))
+                {
+                    if(debug)System.out.println("printing content");
+
+                    ph.printHome(resp,out);
+                }
+                else
+                {
+                    out.write(line);
+                }
+                line = br.readLine();
+            }
+            out.close();
+        }
+        catch (FileNotFoundException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+        catch (IOException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
     }
 
     public void printResponse(HttpServletResponse resp, ArrayList<MyHome> mhl, ArrayList<MyRoom> mrl, ArrayList<MyObject> mol,
@@ -61,7 +134,6 @@ public class PrintResponse
                 }
                 else if(line.contains("[FOOTER]"))
                 {
-                    System.out.println("printing footer");
                     ph.printGen(resp, relativePath + "footer.html",out);
                 }
                 else if(line.contains("[CONTENT]"))
